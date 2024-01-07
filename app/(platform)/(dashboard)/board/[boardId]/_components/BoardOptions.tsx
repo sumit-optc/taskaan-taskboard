@@ -9,7 +9,6 @@ import {
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import { useAction } from "@/hooks/useAction";
-import { error } from "console";
 import { MoreHorizontal, X } from "lucide-react";
 import { toast } from "sonner";
 

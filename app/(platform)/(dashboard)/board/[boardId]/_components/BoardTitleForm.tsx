@@ -5,7 +5,6 @@ import { FormInput } from "@/components/form/FormInput";
 import { Button } from "@/components/ui/button";
 import { useAction } from "@/hooks/useAction";
 import { Board } from "@prisma/client";
-import { error } from "console";
 import { ElementRef, useRef, useState } from "react";
 import { toast } from "sonner";
 
