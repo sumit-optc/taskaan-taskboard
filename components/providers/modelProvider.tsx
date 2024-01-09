@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import CardModel from "../models/card-model/Index";
+import ProModel from "../models/card-model/ProModel";
 
 export default function ModelProvider() {
 	const [isMounted, setIsMounted] = useState(false);
@@ -17,6 +18,7 @@ export default function ModelProvider() {
 	return (
 		<>
 			<CardModel />
+			<ProModel />
 		</>
 	);
 }
