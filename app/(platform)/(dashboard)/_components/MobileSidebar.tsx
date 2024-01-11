@@ -7,9 +7,6 @@ import { Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Sidebar from "./Sidebar";
-import dynamic from "next/dynamic";
-
-const NoSSR = dynamic(() => import("./Sidebar"), { ssr: false });
 
 export default function MobileSidebar() {
 	const pathname = usePathname();
@@ -42,7 +39,7 @@ export default function MobileSidebar() {
 			</Button>
 			<Sheet open={isOpen} onOpenChange={onClose}>
 				<SheetContent side='left' className='p-2 pt-10'>
-					<NoSSR storageKey='t-sidebar-mobile-state' />
+					<Sidebar storageKey='t-sidebar-mobile-state' />
 				</SheetContent>
 			</Sheet>
 		</>
