@@ -8,7 +8,7 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useLocalStorage } from "usehooks-ts";
 import NavItem, { Organization } from "./NavItem";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 interface SidebarProps {
 	storageKey?: string;
@@ -17,12 +17,6 @@ interface SidebarProps {
 export default function Sidebar({
 	storageKey = "t-sidebar-state",
 }: SidebarProps) {
-	const [isMounted, setIsMounted] = useState(false);
-
-	useEffect(() => {
-		setIsMounted(true);
-	}, []);
-
 	const [expanded, setExpanded] = useLocalStorage<Record<string, any>>(
 		storageKey,
 		{}
@@ -60,7 +54,7 @@ export default function Sidebar({
 		setExpanded((curr) => ({ ...curr, [id]: !expanded[id] }));
 	};
 
-	if (!isMounted) {
+	if (!isLoadedOrg || !isLoadedOrgList || userMemberships.isLoading) {
 		return (
 			<>
 				<div className='flex items-center justify-between mb-2'>
@@ -78,9 +72,7 @@ export default function Sidebar({
 
 	return (
 		<>
-			<div
-				className='font-medium text-xs flex items-center mb-1'
-				suppressHydrationWarning>
+			<div className='font-medium text-xs flex items-center mb-1'>
 				<span className='pl-4'>Workspaces</span>
 				<Button
 					asChild
@@ -95,10 +87,9 @@ export default function Sidebar({
 			</div>
 			<Accordion
 				type='multiple'
-				suppressHydrationWarning
 				defaultValue={defaultAccordionValue}
 				className='space-y-2'>
-				{userMemberships.data?.map(({ organization }) => (
+				{userMemberships.data.map(({ organization }) => (
 					<NavItem
 						key={organization.id}
 						isActive={activeOrganization?.id === organization.id}
