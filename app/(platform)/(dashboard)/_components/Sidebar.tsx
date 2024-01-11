@@ -8,7 +8,7 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useLocalStorage } from "usehooks-ts";
 import NavItem, { Organization } from "./NavItem";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface SidebarProps {
 	storageKey?: string;
@@ -17,6 +17,12 @@ interface SidebarProps {
 export default function Sidebar({
 	storageKey = "t-sidebar-state",
 }: SidebarProps) {
+	const [isMounted, setIsMounted] = useState(false);
+
+	useEffect(() => {
+		setIsMounted(true);
+	}, []);
+
 	const [expanded, setExpanded] = useLocalStorage<Record<string, any>>(
 		storageKey,
 		{}
@@ -39,6 +45,10 @@ export default function Sidebar({
 		);
 	}, [isLoadedOrg, isLoadedOrgList, userMemberships.isLoading]);
 
+	if (!isMounted) {
+		return "";
+	}
+
 	const defaultAccordionValue: string[] = Object.keys(expanded).reduce(
 		(acc: string[], key: string) => {
 			if (expanded[key]) {
@@ -54,21 +64,21 @@ export default function Sidebar({
 		setExpanded((curr) => ({ ...curr, [id]: !expanded[id] }));
 	};
 
-	// if (!isLoadedOrg || !isLoadedOrgList || userMemberships.isLoading) {
-	// 	return (
-	// 		<>
-	// 			<div className='flex items-center justify-between mb-2'>
-	// 				<Skeleton className='h-10 w-[50%]' />
-	// 				<Skeleton className='h-10 w-10' />
-	// 			</div>
-	// 			<div className='space-y-2'>
-	// 				<NavItem.Skeleton />
-	// 				<NavItem.Skeleton />
-	// 				<NavItem.Skeleton />
-	// 			</div>
-	// 		</>
-	// 	);
-	// }
+	if (!isLoadedOrg || !isLoadedOrgList || userMemberships.isLoading) {
+		return (
+			<>
+				<div className='flex items-center justify-between mb-2'>
+					<Skeleton className='h-10 w-[50%]' />
+					<Skeleton className='h-10 w-10' />
+				</div>
+				<div className='space-y-2'>
+					<NavItem.Skeleton />
+					<NavItem.Skeleton />
+					<NavItem.Skeleton />
+				</div>
+			</>
+		);
+	}
 
 	return (
 		<>
