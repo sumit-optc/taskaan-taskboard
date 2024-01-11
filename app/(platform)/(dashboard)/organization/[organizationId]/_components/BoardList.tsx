@@ -1,3 +1,5 @@
+"use client";
+
 import { Hint } from "@/components/Hint";
 import FormPopover from "@/components/form/FormPopover";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -6,29 +8,41 @@ import { db } from "@/lib/db";
 import { getAvailableCount } from "@/lib/orgLimit";
 import { checkSubscription } from "@/lib/subscription";
 import { auth } from "@clerk/nextjs";
+import { Board } from "@prisma/client";
 import { HelpCircle, User2 } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default async function BoardList() {
+interface BoardListProps {
+	availableCount: number;
+	isPro: boolean;
+	boards: Board[];
+}
+
+export default function BoardList({
+	availableCount,
+	isPro,
+	boards,
+}: BoardListProps) {
 	const { orgId } = auth();
 
 	if (!orgId) {
 		return redirect("/select-org");
 	}
 
-	const boards = await db.board.findMany({
-		where: {
-			orgId,
-		},
-		orderBy: {
-			createdAt: "desc",
-		},
-	});
+	// const boards = await db.board.findMany({
+	// 	where: {
+	// 		orgId,
+	// 	},
+	// 	orderBy: {
+	// 		createdAt: "desc",
+	// 	},
+	// });
 
-	const availableCount = await getAvailableCount();
-	const availableCount2 = 5;
-	const isPro = await checkSubscription();
+	// const availableCount = await getAvailableCount();
+	// const availableCount2 = 5;
+	// const isPro = await checkSubscription();
 
 	return (
 		<div className='space-y-4'>
@@ -55,7 +69,7 @@ export default async function BoardList() {
 						<span className='text-xs'>
 							{isPro
 								? "Unlimited"
-								: `${MAX_FREE_BOARDS - availableCount2} remaining`}
+								: `${MAX_FREE_BOARDS - availableCount} remaining`}
 						</span>
 						<Hint
 							sideOffset={40}
