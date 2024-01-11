@@ -45,10 +45,6 @@ export default function Sidebar({
 		);
 	}, [isLoadedOrg, isLoadedOrgList, userMemberships.isLoading]);
 
-	if (!isMounted) {
-		return "";
-	}
-
 	const defaultAccordionValue: string[] = Object.keys(expanded).reduce(
 		(acc: string[], key: string) => {
 			if (expanded[key]) {
@@ -64,7 +60,7 @@ export default function Sidebar({
 		setExpanded((curr) => ({ ...curr, [id]: !expanded[id] }));
 	};
 
-	if (!isLoadedOrg || !isLoadedOrgList || userMemberships.isLoading) {
+	if (!isMounted) {
 		return (
 			<>
 				<div className='flex items-center justify-between mb-2'>
@@ -82,7 +78,9 @@ export default function Sidebar({
 
 	return (
 		<>
-			<div className='font-medium text-xs flex items-center mb-1'>
+			<div
+				className='font-medium text-xs flex items-center mb-1'
+				suppressHydrationWarning>
 				<span className='pl-4'>Workspaces</span>
 				<Button
 					asChild
@@ -97,6 +95,7 @@ export default function Sidebar({
 			</div>
 			<Accordion
 				type='multiple'
+				suppressHydrationWarning
 				defaultValue={defaultAccordionValue}
 				className='space-y-2'>
 				{userMemberships.data?.map(({ organization }) => (
