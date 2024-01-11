@@ -25,11 +25,11 @@ export default function BoardList({
 	isPro,
 	boards,
 }: BoardListProps) {
-	const { orgId } = auth();
+	// const { orgId } = auth();
 
-	if (!orgId) {
-		return redirect("/select-org");
-	}
+	// if (!orgId) {
+	// 	return redirect("/select-org");
+	// }
 
 	// const boards = await db.board.findMany({
 	// 	where: {
@@ -43,6 +43,16 @@ export default function BoardList({
 	// const availableCount = await getAvailableCount();
 	// const availableCount2 = 5;
 	// const isPro = await checkSubscription();
+
+	const [isMounted, setIsMounted] = useState(false);
+
+	useEffect(() => {
+		setIsMounted(true);
+	}, []);
+
+	if (!isMounted) {
+		return <BoardList.Skeleton />;
+	}
 
 	return (
 		<div className='space-y-4'>

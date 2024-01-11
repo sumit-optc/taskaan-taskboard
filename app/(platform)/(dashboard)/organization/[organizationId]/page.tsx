@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import BoardList from "./_components/BoardList";
 import Info from "./_components/Info";
 import { Separator } from "@/components/ui/separator";
@@ -32,13 +32,11 @@ export default async function OrganizationIdPage() {
 			<Info isPro={isPro} />
 			<Separator className='my-4' />
 			<div className='px-2 md:px-4'>
-				<Suspense fallback={<BoardList.Skeleton />}>
-					<BoardList
-						availableCount={availableCount}
-						isPro={isPro}
-						boards={boards}
-					/>
-				</Suspense>
+				<BoardList
+					availableCount={availableCount}
+					isPro={isPro}
+					boards={boards}
+				/>
 			</div>
 		</div>
 	);
