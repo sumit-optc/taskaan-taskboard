@@ -8,6 +8,7 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useLocalStorage } from "usehooks-ts";
 import NavItem, { Organization } from "./NavItem";
+import { useEffect } from "react";
 
 interface SidebarProps {
 	storageKey?: string;
@@ -26,6 +27,17 @@ export default function Sidebar({
 	const { userMemberships, isLoaded: isLoadedOrgList } = useOrganizationList({
 		userMemberships: { infinite: true },
 	});
+
+	useEffect(() => {
+		console.log(
+			"isLoadedOrg: ",
+			isLoadedOrg,
+			"isLoadedOrgList: ",
+			isLoadedOrgList,
+			"userMemberships.isLoading: ",
+			userMemberships.isLoading
+		);
+	}, [isLoadedOrg, isLoadedOrgList, userMemberships.isLoading]);
 
 	const defaultAccordionValue: string[] = Object.keys(expanded).reduce(
 		(acc: string[], key: string) => {
